@@ -94,8 +94,9 @@ class Stepper:
 		stepCounter = 0
 	
 		waitTime = 0.000001/speed #waitTime controls speed
-
-		while self.homePin == 0:
+                homed = gpio.input(self.homePin)
+                print(homed)
+		while homed == 0:
 			#gracefully exit if ctr-c is pressed
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
@@ -118,5 +119,6 @@ class Stepper:
 
 		
 testStepper = Stepper([23,24,25,22])
-testStepper.step(1,'left')
+#testStepper.step(1,'left',stayOn = False )
+testStepper.home()
 testStepper.cleanGPIO()
