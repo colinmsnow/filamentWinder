@@ -8,7 +8,7 @@ from time import sleep
 import RPi.GPIO as gpio #https://pypi.python.org/pypi/RPi.GPIO
 #import exitHandler #uncomment this and line 58 if using exitHandler
 
-class stepper:
+class Stepper:
 	#instantiate stepper 
 	#pins = [stepPin, directionPin, enablePin]
 	def __init__(self, pins):
@@ -62,7 +62,7 @@ class stepper:
 
 		while stepCounter < steps:
 			#gracefully exit if ctr-c is pressed
-			exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
 			#turning the gpio on and off tells the easy driver to take one step
 			gpio.output(self.stepPin, True)
@@ -78,20 +78,18 @@ class stepper:
 
 		print("stepperDriver complete (turned " + dir + " " + str(steps) + " steps)")
 
-
-        def home(self,  dir = left, speed=.001, stayOn=False):
-                
+	def home(self,dir = 'left', speed=.001, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		
 		#set the output to true for left and false for right
 		turnLeft = True
-		if (dir == 'right'):
-			turnLeft = False;
-		elif (dir != 'left'):
+		if (dir == 'left'):
+			turnRight = False;
+		elif (dir != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
-		gpio.output(self.directionPin, turnLeft)
+		gpio.output(self.directionPin, turnRight)
 
 		stepCounter = 0
 	
@@ -99,11 +97,12 @@ class stepper:
 
 		while self.homePin == 0:
 			#gracefully exit if ctr-c is pressed
-			exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
 			#turning the gpio on and off tells the easy driver to take one step
 			gpio.output(self.stepPin, True)
 			gpio.output(self.stepPin, False)
+			stepCounter += 1
  
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
@@ -112,10 +111,12 @@ class stepper:
 			#set enable to high (i.e. power is NOT going to the motor)
 			gpio.output(self.enablePin, True)
 
-		print("stepperDriver homing complete")
+		print("stepperDriver homed successfully")
+
+
 
 
 		
-testStepper = stepper([23,24,25,22])
+testStepper = Stepper([23,24,25,22])
 testStepper.step(1,'left')
 testStepper.cleanGPIO()
