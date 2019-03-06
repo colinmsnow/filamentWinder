@@ -44,7 +44,7 @@ class Stepper:
 	# direction = directionection stepper will move
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
-	def step(self, steps, direction, speed=1, stayOn=False):
+	def step(self, steps, direction, speed=.005, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		
@@ -85,7 +85,7 @@ class Stepper:
 
 	
 
-	def home(self,direction = 'left', speed=.001, stayOn=False):
+	def home(self,direction = 'left', speed=.0002, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		
@@ -102,28 +102,23 @@ class Stepper:
 		waitTime = 0.000001/speed #waitTime controls speed
 		homed = gpio.input(self.homePin)
 		print(homed)
-		while homed == 0:
+		while gpio.input(self.homePin) == 0:
 			#gracefully exit if ctr-c is pressed
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
 			#turning the gpio on and off tells the easy driver to take one step
 			gpio.output(self.stepPin, True)
 			gpio.output(self.stepPin, False)
-			if direction == 'left':
-				self.absolute_position -=1
-			if direction == 'right' :
-				self.absolute_position +=1
  
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
-		
+		self.absolute_position = 0
 		if (stayOn == False):
 			#set enable to high (i.e. power is NOT going to the motor)
 			gpio.output(self.enablePin, True)
-
 		print("stepperDriver homed successfully")
 
-	def go_to(self, position, speed=1, stayOn=False):
+	def go_to(self, position, speed=.005, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		
@@ -133,8 +128,7 @@ class Stepper:
 		if self.absolute_position < position:
 			turnRight = True
 		else:
-			print('position already satisfied')
-			return
+			turnRight = False
 
 		gpio.output(self.directionectionPin, turnRight)
 
@@ -150,13 +144,9 @@ class Stepper:
 			gpio.output(self.stepPin, True)
 			gpio.output(self.stepPin, False)
 			stepCounter += 1
-			if turnRight == False:
-				self.absolute_position -=1
-			if turnRight == True :
-				self.absolute_position +=1
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
-		
+		self.absolute_position = position
 		if (stayOn == False):
 			#set enable to high (i.e. power is NOT going to the motor)
 			gpio.output(self.enablePin, True)
@@ -168,4 +158,8 @@ class Stepper:
 testStepper = Stepper([23,24,25,22])
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
+testStepper.go_to(3000)
+testStepper.go_to(1000)
+testStepper.go_to(3000)
+testStepper.go_to(1000)
 testStepper.cleanGPIO()
