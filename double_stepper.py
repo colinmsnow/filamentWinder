@@ -11,6 +11,7 @@ Class to drive two stepper motors for a filament winder given winding angles
 from time import sleep
 import math
 import RPi.GPIO as gpio #https://pypi.python.org/pypi/RPi.GPIO
+import threading
 #import exitHandler #uncomment this and line 58 if using exitHandler
 
 class Winder:
@@ -51,6 +52,8 @@ class Winder:
 		#set enable to high (i.e. power is NOT going to the motor)
 		gpio.output(self.enablePin, True)
 		gpio.output(self.enablePin2, True)
+
+
 		
 		#print("Stepper initialized (step=" + self.stepPin + ", direction=" + self.directionPin + ", enable=" + self.enablePin  ")")
 		print('winder initialized')
@@ -87,7 +90,7 @@ class Winder:
 
 		steps = self.mandrel_length  # apply a constant here later to convert to inches
 	
-		waitTime = 0.000001/speed #waitTime controls speed
+	
 
 
 		#do the math to decide the relative speeds
@@ -96,29 +99,39 @@ class Winder:
 		mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
 		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         # left off here last time still need to implement the speed adjustments
 
+		waitTime = 0.000001/speed #waitTime controls speed
+
+		waitTime2 = 0.000001/mandrel_rotational_speed
+
+		mandrelSteps = steps * mandrel_rotational_speed / speed
+
+		filamentStepper = Stepper()
+		mandrelStepper = Stepper()
+
+		a = threading.Thread(target = filamentStepper.step, args=(steps, waitTime, self.stepPin))
+		b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))
+
+		a.start()
+		b.start()
+
+		a.join()
+		b.join()
 
 
 
-		while stepCounter < steps:
-			#gracefully exit if ctr-c is pressed
-			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
-			#turning the gpio on and off tells the easy driver to take one step
-			gpio.output(self.stepPin, True)
-			gpio.output(self.stepPin, False)
-			stepCounter += 1
-			if direction == 'left':
-				self.absolute_position -=1
-			if direction == 'right' :
-				self.absolute_position +=1
-			#wait before taking the next step thus controlling rotation speed
-			sleep(waitTime)
+		# filamentStepper.step(steps, waitTime, self.stepPin)
+		# mandrelStepper.step(mandrelSteps, waitTime2, self.stepPin2)     # check if it is the right direction
+
+		if direction == 'left':
+			self.absolute_position -= steps
+		if direction == 'right' :
+			self.absolute_position += steps
+
+		self.absolute_position2 += mandrelSteps
 		
-		if (stayOn == False):
-			#set enable to high (i.e. power is NOT going to the motor)
-			gpio.output(self.enablePin, True)
 
-		print("stepperDriver complete (turned " + direction + " " + str(steps) + " steps)")
+		print("90 degree wind complete")
 
 	
 	#step the motor
@@ -236,7 +249,20 @@ class Winder:
 		print("stepperDriver moved to absolute position " + str(self.absolute_position) )
 
 
-		
+class Stepper:
+
+	def step(self, steps, waitTime, stepPin):
+		stepCounter = 0
+		while stepCounter < steps:
+			#gracefully exit if ctr-c is pressed
+			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+
+			#turning the gpio on and off tells the easy driver to take one step
+			gpio.output(stepPin, True)
+			gpio.output(stepPin, False)
+			#wait before taking the next step thus controlling rotation speed
+			sleep(waitTime)
+
 testStepper = Winder([23,24,25,22])
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
