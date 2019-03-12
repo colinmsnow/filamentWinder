@@ -69,7 +69,7 @@ class Winder:
 		gpio.cleanup()
 	
 
-	def wrap90(self, direction, speed=.002):
+	def wrap90(self, direction, speed=.002, stayOn = False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		
