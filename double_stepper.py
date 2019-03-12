@@ -97,7 +97,7 @@ class Winder:
 
 		wrap_length = math.pi * self.mandrel_diameter
 		mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
-		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         # left off here last time still need to implement the speed adjustments
+		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         
 
 		waitTime = 0.000001/speed #waitTime controls speed
 
@@ -109,7 +109,7 @@ class Winder:
 		mandrelStepper = Stepper()
 
 		a = threading.Thread(target = filamentStepper.step, args=(steps, waitTime, self.stepPin))
-		b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))
+		b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
 
 		a.start()
 		b.start()
@@ -263,7 +263,7 @@ class Stepper:
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
 
-testStepper = Winder([23,24,25,22])
+testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
 testStepper.go_to(3000)
