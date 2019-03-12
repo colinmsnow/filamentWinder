@@ -47,7 +47,7 @@ class stepper:
 		#set the output to true for left and false for right
 		turnLeft = True
 		if (dir == 'right'):
-			turnLeft = False;
+			turnLeft = False
 		elif (dir != 'left'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
