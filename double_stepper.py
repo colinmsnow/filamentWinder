@@ -86,7 +86,7 @@ class Winder:
 		gpio.output(self.directionPin, turnRight)
 		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
-		stepCounter = 0
+		# stepCounter = 0
 
 		steps = self.mandrel_length  # apply a constant here later to convert to inches
 	
@@ -132,6 +132,93 @@ class Winder:
 		
 
 		print("90 degree wind complete")
+
+	def wrap(self, direction, angle, speed=.002, stayOn = False):
+
+		testStepper.home()  # homing in the beginning may or may not be a good idea
+
+		stepsperinch = 30  # random guess check later
+		stepsperrotation = 200  # also a guess
+
+
+
+		#set enable to low (i.e. power IS going to the motor)
+		gpio.output(self.enablePin, False)
+		
+		#set the output to true for left and false for right
+		turnRight = True  # possibly messed this up by changing it from left to right
+		if (direction == 'left'):
+			turnRight = False
+		elif (direction != 'right'):
+			print("STEPPER ERROR: no direction supplied")
+			return False
+		gpio.output(self.directionPin, turnRight)
+		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
+
+
+
+		# stepCounter = 0
+
+		# steps = self.mandrel_length  # apply a constant here later to convert to inches
+	
+	
+
+
+		#do the math to decide the relative speeds
+
+		# wrap_length = math.pi * self.mandrel_diameter
+		# mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
+		# mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                
+		# 
+		# 
+		# 
+
+		mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
+
+		waitTime = 0.000001/speed #waitTime controls speed
+
+		waitTime2 = 0.000001/mandrel_rotational_speed
+
+
+
+
+
+		mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
+
+		filamentStepper = Stepper()
+		mandrelStepper = Stepper()
+
+		number_of_passes = int(self.mandrel_diameter * 2 * math.pi / self.filament_width)
+
+		mandrel_turn = int(stepsperrotation / 2 + (self.filament_width / self.mandrel_diameter)*stepsperrotation)
+
+
+		for i in range(number_of_passes):
+
+			gpio.output(self.directionPin, turnRight)
+
+			a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
+			b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+
+			if turnRight == True:
+				turnRight = False
+			else:
+				turnRight = True
+
+			a.start()
+			b.start()
+
+			a.join()
+			b.join()
+
+
+
+			mandrelStepper.step(mandrel_turn, waitTime2, self.stepPin2)
+
+
+		
+
+		print(str(angle) + " degree wind complete")
 
 	
 	#step the motor
@@ -187,7 +274,7 @@ class Winder:
 		#set the output to true for left and false for right
 		turnLeft = True
 		if (direction == 'left'):
-			turnRight = False;
+			turnRight = False
 		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
@@ -266,8 +353,10 @@ class Stepper:
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
-testStepper.go_to(3000)
-testStepper.go_to(1000)
-testStepper.go_to(3000)
-testStepper.go_to(1000)
+testStepper.wrap90('right')
+testStepper.wrap('right', 45)
+# testStepper.go_to(3000)
+# testStepper.go_to(1000)
+# testStepper.go_to(3000)
+# testStepper.go_to(1000)
 testStepper.cleanGPIO()
