@@ -256,7 +256,7 @@ class Winder:
 
 		stepCounter = 0
 	
-		waitTime = 0.000001/speed #waitTime controls speed
+		waitTime = 0.00015/speed #waitTime controls speed
 
 		print('steps = ' + str(steps))
 
