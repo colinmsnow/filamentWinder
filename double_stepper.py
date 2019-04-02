@@ -75,6 +75,7 @@ class Winder:
 	def wrap90(self, direction, speed=.002, stayOn = False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
+		gpio.output(self.enablePin2, False)
 		
 		#set the output to true for left and false for right
 		turnRight = True  # possibly messed this up by changing it from left to right
@@ -99,9 +100,9 @@ class Winder:
 		mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
 		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         
 
-		waitTime = 0.000001/speed #waitTime controls speed
+		waitTime = 0.0001/speed #waitTime controls speed
 
-		waitTime2 = 0.000001/mandrel_rotational_speed
+		waitTime2 = 0.0001/mandrel_rotational_speed
 
 		mandrelSteps = steps * mandrel_rotational_speed / speed
 
