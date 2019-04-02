@@ -198,10 +198,10 @@ class Winder:
 		print(self.mandrel_length)
 
 
-		self.step(self.mandrel_length, turnRight,self.stepPin  )
+		self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
 		print('finished first stepper')
 
-		self.step(self.mandrel_length, turnRight,self.stepPin2  )
+		self.step(self.mandrel_length, turnRight,self.stepPin2, self.stepPin2, self.directionPin2  )
 		print('finished second stepper')
 
 		# for i in range(number_of_passes):
@@ -242,7 +242,7 @@ class Winder:
 	# direction = direction stepper will move
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
-	def step(self, steps, direction, enablePin, speed=.005, stayOn=False):
+	def step(self, steps, direction, enablePin, stepPin,directionPin, speed=.005, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(enablePin, False)
 		
@@ -253,7 +253,7 @@ class Winder:
 		# elif (direction != 'right'):
 		# 	print("STEPPER ERROR: no direction supplied")
 		# 	return False
-		gpio.output(self.directionPin, turnRight)
+		gpio.output(directionPin, turnRight)
 
 		stepCounter = 0
 	
@@ -267,19 +267,19 @@ class Winder:
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
 			#turning the gpio on and off tells the easy driver to take one step
-			gpio.output(self.stepPin, True)
-			gpio.output(self.stepPin, False)
+			gpio.output(stepPin, True)
+			gpio.output(stepPin, False)
 			stepCounter += 1
-			if direction == 'left':
-				self.absolute_position -=1
-			if direction == 'right' :
-				self.absolute_position +=1
+			# if direction == 'left':
+			# 	self.absolute_position -=1
+			# if direction == 'right' :
+			# 	self.absolute_position +=1
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
 		
 		if (stayOn == False):
 			#set enable to high (i.e. power is NOT going to the motor)
-			gpio.output(self.enablePin, True)
+			gpio.output(enablePin, True)
 
 		print("stepperDriver complete (turned " + str(direction) + " " + str(steps) + " steps)")
 
