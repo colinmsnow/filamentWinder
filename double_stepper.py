@@ -211,8 +211,8 @@ class Winder:
 			a.start()
 			b.start()
 
-			a.join()
-			b.join()
+			# a.join()
+			# b.join()
 			print('finished synchronization')
 
 
