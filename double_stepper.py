@@ -193,10 +193,12 @@ class Winder:
 
 		mandrel_turn = int(stepsperrotation / 2 + (self.filament_width / self.mandrel_diameter)*stepsperrotation)
 
-
+		print('beginning wrap')
 		for i in range(number_of_passes):
 
 			gpio.output(self.directionPin, turnRight)
+			print('turnRight = ' + str(turnRight))
+			
 
 			a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
 			b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
@@ -211,10 +213,12 @@ class Winder:
 
 			a.join()
 			b.join()
+			print('finished synchronization')
 
 
 
 			mandrelStepper.step(mandrel_turn, waitTime2, self.stepPin2)
+			print('finished pass')
 
 
 		
