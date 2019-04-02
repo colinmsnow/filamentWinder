@@ -242,7 +242,7 @@ class Winder:
 		turnRight = True  # possibly messed this up by changing it from left to right
 		if (direction == 'left') or direction == False:
 			turnRight = False
-		elif (direction != 'right') or direction == True:
+		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
 		gpio.output(self.directionPin, turnRight)
@@ -253,7 +253,7 @@ class Winder:
 
 		print('steps = ' + str(steps))
 
-		for i in steps:
+		for i in range(steps):
 			print(i)
 			#gracefully exit if ctr-c is pressed
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
