@@ -202,8 +202,9 @@ class Winder:
 			print('turnRight = ' + str(turnRight))
 			
 
-			a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
-			b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+			# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
+			# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+			filamentStepper.step(self.mandrel_length, waitTime, self.stepPin)
 
 			if turnRight == True:
 				turnRight = False
@@ -362,8 +363,8 @@ testStepper.defineParameters(1000,100,1)
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
 # testStepper.wrap90('right')
-filamentStepper.step(self.mandrel_length, waitTime, self.stepPin)
-# testStepper.wrap('right', 45, .2)
+
+testStepper.wrap('right', 45, .2)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
