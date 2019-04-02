@@ -186,8 +186,7 @@ class Winder:
 
 		mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
 
-		# filamentStepper = Stepper()
-		# mandrelStepper = Stepper()
+
 
 		number_of_passes = int(self.mandrel_diameter * 2 * math.pi / self.filament_width)
 
@@ -201,35 +200,35 @@ class Winder:
 		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
 		# print('finished first stepper')
 
-		self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
+		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 		print('finished second stepper')
 
-		# for i in range(number_of_passes):
+		for i in range(number_of_passes):
 
-		# 	gpio.output(self.directionPin, turnRight)
-		# 	print('turnRight = ' + str(turnRight))
+			gpio.output(self.directionPin, turnRight)
+			print('turnRight = ' + str(turnRight))
 			
 
-		# 	# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
-		# 	# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+			a = threading.Thread(target = self.step, args=(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin ))
+			b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2))   # check if it is the right direction
 			
 
-		# 	if turnRight == True:
-		# 		turnRight = False
-		# 	else:
-		# 		turnRight = True
+			if turnRight == True:
+				turnRight = False
+			else:
+				turnRight = True
 
-		# 	# a.start()
-		# 	# b.start()
+			a.start()
+			b.start()
 
-		# 	# a.join()
-		# 	# b.join()
-		# 	print('finished synchronization')
+			a.join()
+			b.join()
+			print('finished synchronization')
 
 
 			
-		# 	# self.step(mandrel_turn, waitTime2, self.stepPin2)
-		# 	print('finished pass')
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2  )
+			print('finished pass')
 
 
 		
