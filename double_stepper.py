@@ -109,8 +109,8 @@ class Winder:
 		filamentStepper = Stepper()
 		mandrelStepper = Stepper()
 
-		a = threading.Thread(target = filamentStepper.step, args=(steps, waitTime, self.stepPin))
-		b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+		a = threading.Thread(target = self.step, args=(steps, turnRight,self.enablePin, self.stepPin, self.directionPin, speed ))
+		b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
 
 		a.start()
 		b.start()
@@ -198,10 +198,10 @@ class Winder:
 
 
 		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
-		# print('finished first stepper')
+
 
 		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
-		print('finished second stepper')
+
 
 		for i in range(number_of_passes):
 
@@ -209,8 +209,8 @@ class Winder:
 			print('turnRight = ' + str(turnRight))
 			
 
-			a = threading.Thread(target = self.step, args=(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin ))
-			b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2))   # check if it is the right direction
+			a = threading.Thread(target = self.step, args=(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin, speed ))
+			b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
 			
 
 			if turnRight == True:
