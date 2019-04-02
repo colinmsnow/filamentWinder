@@ -273,7 +273,7 @@ class Winder:
 			#set enable to high (i.e. power is NOT going to the motor)
 			gpio.output(self.enablePin, True)
 
-		print("stepperDriver complete (turned " + direction + " " + str(steps) + " steps)")
+		print("stepperDriver complete (turned " + str(direction) + " " + str(steps) + " steps)")
 
 
 	
