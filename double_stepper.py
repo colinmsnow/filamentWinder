@@ -196,32 +196,40 @@ class Winder:
 		print('beginning wrap')
 		print(mandrelSteps)
 		print(self.mandrel_length)
-		for i in range(number_of_passes):
 
-			gpio.output(self.directionPin, turnRight)
-			print('turnRight = ' + str(turnRight))
+
+		self.step(self.mandrel_length, turnRight,self.stepPin  )
+		print('finished first stepper')
+
+		self.step(self.mandrel_length, turnRight,self.stepPin2  )
+		print('finished second stepper')
+
+		# for i in range(number_of_passes):
+
+		# 	gpio.output(self.directionPin, turnRight)
+		# 	print('turnRight = ' + str(turnRight))
 			
 
-			# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
-			# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
-			self.step(self.mandrel_length, turnRight,self.stepPin  )
+		# 	# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
+		# 	# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
+			
 
-			if turnRight == True:
-				turnRight = False
-			else:
-				turnRight = True
+		# 	if turnRight == True:
+		# 		turnRight = False
+		# 	else:
+		# 		turnRight = True
 
-			# a.start()
-			# b.start()
+		# 	# a.start()
+		# 	# b.start()
 
-			# a.join()
-			# b.join()
-			print('finished synchronization')
+		# 	# a.join()
+		# 	# b.join()
+		# 	print('finished synchronization')
 
 
-			self.step(self.mandrel_length, turnRight,self.stepPin2  )
-			# self.step(mandrel_turn, waitTime2, self.stepPin2)
-			print('finished pass')
+			
+		# 	# self.step(mandrel_turn, waitTime2, self.stepPin2)
+		# 	print('finished pass')
 
 
 		
