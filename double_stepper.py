@@ -201,7 +201,7 @@ class Winder:
 		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
 		# print('finished first stepper')
 
-		self.step(self.mandrel_length, turnRight,self.stepPin2, self.stepPin2, self.directionPin2  )
+		self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 		print('finished second stepper')
 
 		# for i in range(number_of_passes):
@@ -373,9 +373,9 @@ testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 testStepper.defineParameters(1000,100,1)
 #testStepper.step(1,'left',stayOn = False )
 # testStepper.home()
-testStepper.wrap90('right')
+# testStepper.wrap90('right')
 
-# testStepper.wrap('right', 45, .2)
+testStepper.wrap('right', 45, .2)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
