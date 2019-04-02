@@ -186,8 +186,8 @@ class Winder:
 
 		mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
 
-		filamentStepper = Stepper()
-		mandrelStepper = Stepper()
+		# filamentStepper = Stepper()
+		# mandrelStepper = Stepper()
 
 		number_of_passes = int(self.mandrel_diameter * 2 * math.pi / self.filament_width)
 
@@ -204,15 +204,15 @@ class Winder:
 
 			# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
 			# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
-			filamentStepper.step(self.mandrel_length, waitTime, self.stepPin)
+			self.step(self.mandrel_length, waitTime, self.stepPin)
 
 			if turnRight == True:
 				turnRight = False
 			else:
 				turnRight = True
 
-			a.start()
-			b.start()
+			# a.start()
+			# b.start()
 
 			# a.join()
 			# b.join()
@@ -220,7 +220,7 @@ class Winder:
 
 
 
-			mandrelStepper.step(mandrel_turn, waitTime2, self.stepPin2)
+			self.step(mandrel_turn, waitTime2, self.stepPin2)
 			print('finished pass')
 
 
@@ -364,7 +364,7 @@ class Stepper:
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 testStepper.defineParameters(1000,100,1)
 #testStepper.step(1,'left',stayOn = False )
-testStepper.home()
+# testStepper.home()
 # testStepper.wrap90('right')
 
 testStepper.wrap('right', 45, .2)
