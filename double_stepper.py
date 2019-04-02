@@ -100,9 +100,9 @@ class Winder:
 		mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
 		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         
 
-		waitTime = 0.0001/speed #waitTime controls speed
+		waitTime = 0.00015/speed #waitTime controls speed
 
-		waitTime2 = 0.0001/mandrel_rotational_speed
+		waitTime2 = 0.00015/mandrel_rotational_speed
 
 		mandrelSteps = steps * mandrel_rotational_speed / speed
 
@@ -176,9 +176,9 @@ class Winder:
 
 		mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
 
-		waitTime = 0.000001/speed #waitTime controls speed
+		waitTime = 0.00015/speed #waitTime controls speed
 
-		waitTime2 = 0.000001/mandrel_rotational_speed
+		waitTime2 = 0.00015/mandrel_rotational_speed
 
 
 
@@ -355,7 +355,7 @@ testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 testStepper.defineParameters(1000,3,.1)
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
-testStepper.wrap90('right')
+# testStepper.wrap90('right')
 testStepper.wrap('right', 45)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
