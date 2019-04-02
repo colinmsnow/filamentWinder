@@ -219,7 +219,7 @@ class Winder:
 			print('finished synchronization')
 
 
-			self.step(self.mandrel_length, turnRight,self.stepPin  )
+			self.step(self.mandrel_length, turnRight,self.stepPin2  )
 			# self.step(mandrel_turn, waitTime2, self.stepPin2)
 			print('finished pass')
 
