@@ -109,8 +109,8 @@ class Winder:
 		filamentStepper = Stepper()
 		mandrelStepper = Stepper()
 
-		a = threading.Thread(target = self.step, args=(steps, turnRight,self.enablePin, self.stepPin, self.directionPin, speed ))
-		b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
+		a = threading.Thread(target = self.step, args=(steps, turnRight,self.enablePin, self.stepPin, self.directionPin, speed*10 ))
+		b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed*10))   # check if it is the right direction
 
 		a.start()
 		b.start()
