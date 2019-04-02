@@ -250,9 +250,9 @@ class Winder:
 		turnRight = True  # possibly messed this up by changing it from left to right
 		if (direction == 'left') or direction == False:
 			turnRight = False
-		elif (direction != 'right'):
-			print("STEPPER ERROR: no direction supplied")
-			return False
+		# elif (direction != 'right'):
+		# 	print("STEPPER ERROR: no direction supplied")
+		# 	return False
 		gpio.output(self.directionPin, turnRight)
 
 		stepCounter = 0
