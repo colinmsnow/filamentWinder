@@ -251,7 +251,10 @@ class Winder:
 	
 		waitTime = 0.000001/speed #waitTime controls speed
 
+		print('steps = ' + str(steps))
+
 		for i in steps:
+			print(i)
 			#gracefully exit if ctr-c is pressed
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
 
