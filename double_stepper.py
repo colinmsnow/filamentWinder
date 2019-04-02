@@ -198,8 +198,8 @@ class Winder:
 		print(self.mandrel_length)
 
 
-		self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
-		print('finished first stepper')
+		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
+		# print('finished first stepper')
 
 		self.step(self.mandrel_length, turnRight,self.stepPin2, self.stepPin2, self.directionPin2  )
 		print('finished second stepper')
