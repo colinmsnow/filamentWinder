@@ -204,7 +204,7 @@ class Winder:
 
 			# a = threading.Thread(target = filamentStepper.step, args=(self.mandrel_length, waitTime, self.stepPin))
 			# b = threading.Thread(target = mandrelStepper.step, args=(mandrelSteps, waitTime2, self.stepPin2))   # check if it is the right direction
-			self.step(self.mandrel_length, waitTime, self.stepPin)
+			self.step(self.mandrel_length, turnRight,self.stepPin  )
 
 			if turnRight == True:
 				turnRight = False
@@ -219,8 +219,8 @@ class Winder:
 			print('finished synchronization')
 
 
-
-			self.step(mandrel_turn, waitTime2, self.stepPin2)
+			self.step(self.mandrel_length, turnRight,self.stepPin  )
+			# self.step(mandrel_turn, waitTime2, self.stepPin2)
 			print('finished pass')
 
 
@@ -234,15 +234,15 @@ class Winder:
 	# direction = direction stepper will move
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
-	def step(self, steps, direction, speed=.005, stayOn=False):
+	def step(self, steps, direction, enablePin, speed=.005, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
-		gpio.output(self.enablePin, False)
+		gpio.output(enablePin, False)
 		
 		#set the output to true for left and false for right
 		turnRight = True  # possibly messed this up by changing it from left to right
-		if (direction == 'left'):
+		if (direction == 'left') or direction == False:
 			turnRight = False
-		elif (direction != 'right'):
+		elif (direction != 'right') or direction == True:
 			print("STEPPER ERROR: no direction supplied")
 			return False
 		gpio.output(self.directionPin, turnRight)
