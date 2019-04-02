@@ -194,6 +194,8 @@ class Winder:
 		mandrel_turn = int(stepsperrotation / 2 + (self.filament_width / self.mandrel_diameter)*stepsperrotation)
 
 		print('beginning wrap')
+		print(mandrelSteps)
+		print(self.mandrel_length)
 		for i in range(number_of_passes):
 
 			gpio.output(self.directionPin, turnRight)
