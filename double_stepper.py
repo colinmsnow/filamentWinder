@@ -263,7 +263,7 @@ class Winder:
 
 		print('steps = ' + str(steps))
 
-		for i in range(steps):
+		for i in range(int(steps)):
 
 			#gracefully exit if ctr-c is pressed
 			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
@@ -377,7 +377,7 @@ testStepper.defineParameters(1000,100,1)
 # testStepper.home()
 testStepper.wrap90('right')
 
-# testStepper.wrap('right', 45, .2)
+testStepper.wrap('right', 45, .2)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
