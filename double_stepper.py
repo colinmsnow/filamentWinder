@@ -85,7 +85,7 @@ class Winder:
 			print("STEPPER ERROR: no direction supplied")
 			return False
 		gpio.output(self.directionPin, turnRight)
-		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
+		gpio.output(self.directionPin2, True)   # not sure if this is the right direction
 
 		# stepCounter = 0
 
@@ -377,7 +377,7 @@ testStepper.defineParameters(1000,100,1)
 # testStepper.home()
 testStepper.wrap90('right')
 
-testStepper.wrap('right', 45, .2)
+# testStepper.wrap('right', 45, .2)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
