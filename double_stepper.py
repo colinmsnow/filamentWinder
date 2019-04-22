@@ -78,9 +78,9 @@ class Winder:
 		gpio.output(self.enablePin2, False)
 		
 		#set the output to true for left and false for right
-		turnRight = False  # possibly messed this up by changing it from left to right
+		turnRight = True  # possibly messed this up by changing it from left to right
 		if (direction == 'left'):
-			turnRight = True
+			turnRight = False
 		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
@@ -100,14 +100,11 @@ class Winder:
 		mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
 		mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         
 
-		waitTime = 0.00015/speed #waitTime controls speed
 
-		waitTime2 = 0.00015/mandrel_rotational_speed
 
 		mandrelSteps = steps * mandrel_rotational_speed / speed
 
-		filamentStepper = Stepper()
-		mandrelStepper = Stepper()
+
 
 		print('Linear speed is ' + str(speed*10))
 		print('Rotational speed is ' + str(mandrel_rotational_speed*10))
@@ -150,9 +147,9 @@ class Winder:
 		gpio.output(self.enablePin, False)
 		
 		#set the output to true for left and false for right
-		turnRight = False  # possibly messed this up by changing it from left to right
+		turnRight = True  # possibly messed this up by changing it from left to right
 		if (direction == 'left'):
-			turnRight = True
+			turnRight = False
 		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
