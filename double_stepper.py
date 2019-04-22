@@ -313,6 +313,10 @@ class Winder:
 		if (stayOn == False):
 			#set enable to high (i.e. power is NOT going to the motor)
 			gpio.output(self.enablePin, True)
+
+		self.step(20, True,self.enablePin, self.stepPin, self.directionPin  )
+
+
 		print("stepperDriver homed successfully")
 
 	def go_to(self, position, speed=.005, stayOn=False):
@@ -371,7 +375,7 @@ testStepper.defineParameters(3000,100,1)
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 45, .2)
+testStepper.wrap('right', 45,.01)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
