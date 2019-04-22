@@ -85,7 +85,7 @@ class Winder:
 			print("STEPPER ERROR: no direction supplied")
 			return False
 		gpio.output(self.directionPin, turnRight)
-		gpio.output(self.directionPin2, True)   # not sure if this is the right direction
+		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
 		# stepCounter = 0
 
@@ -106,11 +106,11 @@ class Winder:
 
 
 
-		print('Linear speed is ' + str(speed*10))
-		print('Rotational speed is ' + str(mandrel_rotational_speed*10))
+		print('Linear speed is ' + str(speed*5))
+		print('Rotational speed is ' + str(mandrel_rotational_speed*5))
 
-		a = threading.Thread(target = self.step, args=(steps, turnRight,self.enablePin, self.stepPin, self.directionPin, speed*10 ))
-		b = threading.Thread(target = self.step, args=(mandrelSteps, True,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed*10))   # check if it is the right direction
+		a = threading.Thread(target = self.step, args=(steps, turnRight,self.enablePin, self.stepPin, self.directionPin, speed*5 ))
+		b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed*5))   # check if it is the right direction
 
 		a.start()
 		b.start()
@@ -154,7 +154,7 @@ class Winder:
 			print("STEPPER ERROR: no direction supplied")
 			return False
 		gpio.output(self.directionPin, turnRight)
-		gpio.output(self.directionPin2, True)   # not sure if this is the right direction
+		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
 
 
@@ -207,7 +207,7 @@ class Winder:
 			
 
 			a = threading.Thread(target = self.step, args=(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin, speed ))
-			b = threading.Thread(target = self.step, args=(mandrelSteps, True,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
+			b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
 			
 
 			if turnRight == True:
