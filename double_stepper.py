@@ -72,7 +72,7 @@ class Winder:
 		gpio.cleanup()
 	
 
-	def wrap90(self, direction, speed=.002, stayOn = False):
+	def wrap90(self, direction, speed=.0005, stayOn = False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(self.enablePin, False)
 		gpio.output(self.enablePin2, False)
@@ -134,7 +134,7 @@ class Winder:
 
 		print("90 degree wind complete")
 
-	def wrap(self, direction, angle, speed=.0005, stayOn = False):
+	def wrap(self, direction, angle, speed=.002, stayOn = False):
 
 		testStepper.home()  # homing in the beginning may or may not be a good idea
 
