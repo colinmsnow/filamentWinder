@@ -261,7 +261,7 @@ class Winder:
 			
 
 			a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.enablePin, self.stepPin, self.directionPin, carraige_speed ))
-			b = threading.Thread(target = self.step, args=(mandrel_steps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed))   # check if it is the right direction
+			b = threading.Thread(target = self.step, args=(abs(mandrel_steps), False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed) ) )# check if it is the right direction
 			
 
 			if turnRight == True:
@@ -278,7 +278,7 @@ class Winder:
 
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2  )
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed  )
 			print('finished pass')
 
 
