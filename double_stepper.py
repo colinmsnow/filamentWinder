@@ -212,7 +212,7 @@ class Winder:
 		carrage_distance_per_revolution = math.pi* BELT_PULLEY_DIAMETER
 		carrage_distance_per_step = carrage_distance_per_revolution / STEPS_PER_REV 
 
-		relative_distance = math.sin(angle)
+		relative_distance = math.sin(math.radians(angle))
 		relative_steps = relative_distance * (carrage_distance_per_step / mandrel_distance_per_step)
 
 
@@ -232,8 +232,10 @@ class Winder:
 		# mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
 
 
-
-		number_of_passes = int((mandrel_circumference / self.filament_width) * math.cos(angle))
+		print(mandrel_circumference)
+		print(self.filament_width)
+		print(math.cos(angle))
+		number_of_passes = int((mandrel_circumference / self.filament_width) * math.cos(math.radians(angle)))
 
 		steps_per_turn = mandrel_circumference / mandrel_distance_per_step
 
