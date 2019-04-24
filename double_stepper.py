@@ -233,7 +233,7 @@ class Winder:
 
 
 
-		number_of_passes = int(mandrel_circumference / self.filament_width)
+		number_of_passes = int(mandrel_circumference / self.filament_width * math.cos(angle))
 
 		steps_per_turn = mandrel_circumference / mandrel_distance_per_step
 
