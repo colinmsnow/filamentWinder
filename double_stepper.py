@@ -131,7 +131,7 @@ class Winder:
 
 		carraige_steps = self.mandrel_length / carrage_distance_per_step
 
-		mandrel_steps = carraige_steps / relative_distance
+		mandrel_steps = carraige_steps / relative_steps
 
 
 		print('Linear speed is ' + str(carrage_speed))
@@ -224,7 +224,7 @@ class Winder:
 
 		carraige_steps = self.mandrel_length / carrage_distance_per_step
 
-		mandrel_steps = carraige_steps / relative_distance
+		mandrel_steps = carraige_steps / relative_steps
 
 
 		# mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
@@ -292,7 +292,7 @@ class Winder:
 	# direction = direction stepper will move
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
-	def step(self, steps, direction, enablePin, stepPin,directionPin, speed=.0005, stayOn=False):
+	def step(self, steps, direction, enablePin, stepPin,directionPin, speed=.005, stayOn=False):
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(enablePin, False)
 		
@@ -430,7 +430,7 @@ testStepper.defineParameters(600,38,2.2)
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 45)
+testStepper.wrap('right', 60)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
