@@ -254,7 +254,7 @@ class Winder:
 		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 
 
-		for i in range(number_of_passes):
+		for i in range(number_of_passes * 2):
 
 			gpio.output(self.directionPin, turnRight)
 			print('turnRight = ' + str(turnRight))
