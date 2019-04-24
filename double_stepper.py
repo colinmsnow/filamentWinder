@@ -99,9 +99,8 @@ class Winder:
 		gpio.output(self.directionPin, turnRight)
 		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
-		# stepCounter = 0
 
-		steps = self.mandrel_length  # apply a constant here later to convert to inches
+		
 	
 	
 
@@ -112,8 +111,6 @@ class Winder:
 		# tangential = r * rotational
 
 		mandrel_circumference = math.pi * self.mandrel_diameter
-
-		#mandrel_tengential_speed = mandrel_rotational_speed * circumference/2  /MANDREL_GEAR_RATIO / STEPS_PER_REV
 
 
 		mandrel_distance_per_revolution = mandrel_circumference / MANDREL_GEAR_RATIO
@@ -137,20 +134,6 @@ class Winder:
 		mandrel_steps = carraige_steps / relative_distance
 
 
-
-
-
-
-
-		# mandrel_tangential_speed = (circumference / (self.filament_width * self.pulley_diameter)) * speed
-		# mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                         
-
-
-
-		# mandrelSteps = steps * mandrel_rotational_speed / speed
-
-
-
 		print('Linear speed is ' + str(carrage_speed))
 		print('Rotational speed is ' + str(mandrel_speed))
 
@@ -169,22 +152,22 @@ class Winder:
 		# filamentStepper.step(steps, waitTime, self.stepPin)
 		# mandrelStepper.step(mandrelSteps, waitTime2, self.stepPin2)     # check if it is the right direction
 
-		if direction == 'left':
-			self.absolute_position -= steps
-		if direction == 'right' :
-			self.absolute_position += steps
+		# if direction == 'left':
+		# 	self.absolute_position -= steps
+		# if direction == 'right' :
+		# 	self.absolute_position += steps
 
-		self.absolute_position2 += mandrel_steps
+		# self.absolute_position2 += mandrel_steps
 		
 
 		print("90 degree wind complete")
 
-	def wrap(self, direction, angle, speed=.002, stayOn = False):
+	def wrap(self, direction, angle, speed=.02, stayOn = False):
 
-		testStepper.home()  # homing in the beginning may or may not be a good idea
+		# testStepper.home()  # homing in the beginning may or may not be a good idea
 
-		stepsperinch = 30  # random guess check later
-		stepsperrotation = 200  # also a guess
+		# stepsperinch = 30  # random guess check later
+		# stepsperrotation = 200  # also a guess
 
 
 
@@ -219,24 +202,49 @@ class Winder:
 		# 
 		# 
 
-		mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
+
+		mandrel_circumference = math.pi * self.mandrel_diameter
+
+
+		mandrel_distance_per_revolution = mandrel_circumference / MANDREL_GEAR_RATIO
+		mandrel_distance_per_step = mandrel_distance_per_revolution / STEPS_PER_REV
+
+		carrage_distance_per_revolution = math.pi* BELT_PULLEY_DIAMETER
+		carrage_distance_per_step = carrage_distance_per_revolution / STEPS_PER_REV 
+
+		relative_distance = math.sin(angle)
+		relative_steps = relative_distance * (carrage_distance_per_step / mandrel_distance_per_step)
 
 
 
+		mandrel_speed = speed
+
+		carraige_speed = mandrel_speed * relative_steps
+
+
+		carraige_steps = self.mandrel_length / carrage_distance_per_step
+
+		mandrel_steps = carraige_steps / relative_distance
+
+
+		# mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
+
+		# mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
 
 
 
-		mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
+		number_of_passes = int(mandrel_circumference / self.filament_width)
+
+		steps_per_turn = mandrel_circumference / mandrel_distance_per_step
+
+		mandrel_turn = int(  steps_per_turn / 2 + self.filament_width / mandrel_distance_per_step)
 
 
 
-		number_of_passes = int(self.mandrel_diameter * 2 * math.pi / self.filament_width)
-
-		mandrel_turn = int(stepsperrotation / 2 + (self.filament_width / self.mandrel_diameter)*stepsperrotation)
 
 		print('beginning wrap')
-		print('Linear speed is ' + str(speed*10))
-		print('Rotational speed is ' + str(mandrel_rotational_speed*10))
+		print('Linear speed is ' + str(carraige_speed))
+		print('Rotational speed is ' + str(mandrel_speed))
 
 
 		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
@@ -251,8 +259,8 @@ class Winder:
 			print('turnRight = ' + str(turnRight))
 			
 
-			a = threading.Thread(target = self.step, args=(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin, speed ))
-			b = threading.Thread(target = self.step, args=(mandrelSteps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_rotational_speed))   # check if it is the right direction
+			a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.enablePin, self.stepPin, self.directionPin, carraige_speed ))
+			b = threading.Thread(target = self.step, args=(mandrel_steps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed))   # check if it is the right direction
 			
 
 			if turnRight == True:
@@ -415,7 +423,7 @@ class Stepper:
 			sleep(waitTime)
 
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(60,38,2.2)
+testStepper.defineParameters(100,38,2.2)
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
 testStepper.wrap90('right')
