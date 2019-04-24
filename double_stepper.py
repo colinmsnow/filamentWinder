@@ -233,7 +233,7 @@ class Winder:
 
 
 
-		number_of_passes = int(mandrel_circumference / self.filament_width * math.cos(angle))
+		number_of_passes = int((mandrel_circumference / self.filament_width) * math.cos(angle))
 
 		steps_per_turn = mandrel_circumference / mandrel_distance_per_step
 
@@ -254,7 +254,7 @@ class Winder:
 		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 
 
-		for i in range(abs(number_of_passes)):
+		for i in range(abs(number_of_passes) * 2):
 
 			gpio.output(self.directionPin, turnRight)
 			print('turnRight = ' + str(turnRight))
