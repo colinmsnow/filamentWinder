@@ -242,9 +242,10 @@ class Winder:
 
 
 
-		print('beginning wrap')
-		print('Linear speed is ' + str(carraige_speed))
-		print('Rotational speed is ' + str(mandrel_speed))
+		print(' beginning wrap')
+		print(' Linear speed is ' + str(carraige_speed))
+		print(' Rotational speed is ' + str(mandrel_speed))
+		print(' Number of passes is ' + str(number_of_passes))
 
 
 		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
@@ -423,7 +424,7 @@ class Stepper:
 			sleep(waitTime)
 
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(1000,38,2.2)
+testStepper.defineParameters(100,38,2.2)
 #testStepper.step(1,'left',stayOn = False )
 testStepper.home()
 # testStepper.wrap90('right')
