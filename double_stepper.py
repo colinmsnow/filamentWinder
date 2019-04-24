@@ -430,7 +430,7 @@ testStepper.defineParameters(600,38,2.2)
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 60)
+testStepper.wrap('right', 45)
 # testStepper.go_to(3000)
 # testStepper.go_to(1000)
 # testStepper.go_to(3000)
