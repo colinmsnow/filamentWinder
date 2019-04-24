@@ -325,6 +325,7 @@ class Winder:
 			# if direction == 'right' :
 			# 	self.absolute_position +=1
 			#wait before taking the next step thus controlling rotation speed
+			print(waitTime)
 			sleep(waitTime)
 		
 		if (stayOn == False):
