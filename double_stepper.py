@@ -162,7 +162,7 @@ class Winder:
 
 		print("90 degree wind complete")
 
-	def wrap(self, direction, angle, speed=.04, stayOn = False):
+	def wrap(self, direction, angle, speed=.08, stayOn = False):
 
 		# testStepper.home()  # homing in the beginning may or may not be a good idea
 
@@ -280,7 +280,7 @@ class Winder:
 
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed /2 )
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed /4 )
 
 			sleep(.25)
 			print('finished pass')
