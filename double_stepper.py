@@ -254,7 +254,7 @@ class Winder:
 		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 
 
-		for i in range(abs(number_of_passes) * 2):
+		for i in range(abs(number_of_passes)):
 
 			gpio.output(self.directionPin, turnRight)
 			print('turnRight = ' + str(turnRight))
@@ -276,9 +276,13 @@ class Winder:
 			b.join()
 			print('finished synchronization')
 
+			sleep(.25)
+
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed  )
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed /2 )
+
+			sleep(.25)
 			print('finished pass')
 
 
