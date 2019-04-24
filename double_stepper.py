@@ -325,8 +325,8 @@ class Winder:
 			# if direction == 'right' :
 			# 	self.absolute_position +=1
 			#wait before taking the next step thus controlling rotation speed
-			print(waitTime)
-			sleep(waitTime)
+
+			sleep(abs(waitTime))
 		
 		if (stayOn == False):
 			#set enable to high (i.e. power is NOT going to the motor)
