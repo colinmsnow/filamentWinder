@@ -239,7 +239,7 @@ class Winder:
 
 		steps_per_turn = mandrel_circumference / mandrel_distance_per_step
 
-		mandrel_turn = int(  steps_per_turn / 2 + self.filament_width / mandrel_distance_per_step)
+		mandrel_turn = int(  steps_per_turn / 2 + ((self.filament_width * math.tan(math.radians(angle))) / mandrel_distance_per_step))
 
 
 
