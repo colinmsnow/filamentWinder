@@ -435,13 +435,10 @@ class Stepper:
 
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
 testStepper.defineParameters(600,38,10)
-#testStepper.step(1,'left',stayOn = False )
-testStepper.home()
-testStepper.wrap90('right')
 
-# testStepper.wrap('right', 60)
-# testStepper.go_to(3000)
-# testStepper.go_to(1000)
-# testStepper.go_to(3000)
-# testStepper.go_to(1000)
+testStepper.home()
+# testStepper.wrap90('right')
+
+testStepper.wrap('right', 60)
+
 testStepper.cleanGPIO()
