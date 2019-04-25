@@ -239,9 +239,10 @@ class Winder:
 
 		steps_per_turn = STEPS_PER_REV * MANDREL_GEAR_RATIO
 
-		print("steps moved after wrap is " + str(int(  abs(steps_per_turn / 2) + abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))))
+		
 
-		mandrel_turn = int(  abs(steps_per_turn / 2 )+ abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))
+		mandrel_turn = int(  abs(steps_per_turn / 2 )+ abs(self.filament_width / math.sin(math.radians(angle)) )/ mandrel_distance_per_step)
+		print('mandrel turn is : ' + str(mandrel_turn))
 
 
 
