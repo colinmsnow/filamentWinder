@@ -239,9 +239,9 @@ class Winder:
 
 		steps_per_turn = STEPS_PER_REV * MANDREL_GEAR_RATIO
 
-		print("steps moved after wrap is " + str(int(  steps_per_turn / 2 + abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))))
+		print("steps moved after wrap is " + str(int(  abs(steps_per_turn / 2) + abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))))
 
-		mandrel_turn = int(  steps_per_turn / 2 + abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))
+		mandrel_turn = int(  abs(steps_per_turn / 2 )+ abs(((self.filament_width * (1 +math.tan(math.radians(angle)))) / mandrel_distance_per_step)))
 
 
 
@@ -284,7 +284,7 @@ class Winder:
 
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed /4 )
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed /2) )
 
 			sleep(.25)
 			print('finished pass')
