@@ -212,7 +212,7 @@ class Winder:
 		carrage_distance_per_revolution = math.pi* BELT_PULLEY_DIAMETER
 		carrage_distance_per_step = carrage_distance_per_revolution / STEPS_PER_REV 
 
-		relative_distance = math.sin(math.radians(angle))
+		relative_distance = math.sin(math.radians(90-angle))
 		relative_steps = relative_distance * (carrage_distance_per_step / mandrel_distance_per_step)
 
 
