@@ -432,13 +432,13 @@ class Stepper:
 			gpio.output(stepPin, False)
 			#wait before taking the next step thus controlling rotation speed
 			sleep(waitTime)
-
+#testStepper.step(1,'left',stayOn = False )
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(600,38,10)
+testStepper.defineParameters(500,38,10)
 
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 60)
+testStepper.wrap('right', 45)
 
 testStepper.cleanGPIO()
