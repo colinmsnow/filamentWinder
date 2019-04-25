@@ -439,6 +439,6 @@ testStepper.defineParameters(500,38,10)
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 89)
+testStepper.wrap('right', 10)
 
 testStepper.cleanGPIO()
