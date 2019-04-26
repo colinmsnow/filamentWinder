@@ -289,7 +289,7 @@ class Winder:
 
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed /2) )
+			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed) )
 
 			sleep(.25)
 			print('finished pass')
@@ -443,6 +443,6 @@ testStepper.defineParameters(100,38,10)
 testStepper.home()
 # testStepper.wrap90('right')
 
-testStepper.wrap('right', 60)
+testStepper.wrap('right', 45)
 
 testStepper.cleanGPIO()
