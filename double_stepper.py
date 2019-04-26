@@ -438,7 +438,7 @@ class Stepper:
 			sleep(waitTime)
 #testStepper.step(1,'left',stayOn = False )
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(200,38,10)
+testStepper.defineParameters(150,38,10)
 
 testStepper.home()
 # testStepper.wrap90('right')
