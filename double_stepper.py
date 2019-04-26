@@ -162,7 +162,7 @@ class Winder:
 
 		print("90 degree wind complete")
 
-	def wrap(self, direction, angle, speed=.02, stayOn = False):
+	def wrap(self, direction, angle, speed=.04, stayOn = False):
 
 		# testStepper.home()  # homing in the beginning may or may not be a good idea
 
@@ -438,7 +438,7 @@ class Stepper:
 			sleep(waitTime)
 #testStepper.step(1,'left',stayOn = False )
 testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(150,38,10)
+testStepper.defineParameters(100,38,10)
 
 testStepper.home()
 # testStepper.wrap90('right')
