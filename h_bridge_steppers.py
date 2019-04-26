@@ -33,37 +33,38 @@ class Winder:
 
 		self.pins = pins
 		self.pins2 = pins2
-		self.stepPin = self.pins[0]
-		self.directionPin = self.pins[1]
-		self.enablePin = self.pins[2]
-		self.homePin = self.pins[3]
+		self.pin1 = self.pins[0]
+		self.pin2 = self.pins[1]
+		self.pin3 = self.pins[2]
+		self.pin4 = self.pins[3]
+        self.homePin = self.ins[4]
 
-		self.stepPin2 = self.pins2[0]
-		self.directionPin2 = self.pins2[1]
-		self.enablePin2 = self.pins2[2]
-		# self.homePin2 = self.pins2[3]
 
-		self.absolute_position = 0
-		self.absolute_position2 = 0
+        self.pin5 = self.pins2[0]
+		self.pin6 = self.pins2[1]
+		self.pin7 = self.pins2[2]
+		self.pin8 = self.pins2[3]
 
-		self.pulley_diameter = .5    # change and assign units later
 		
 		#use the broadcom layout for the gpio
 		gpio.setmode(gpio.BCM)
 		
 		#set gpio pins
-		gpio.setup(self.stepPin, gpio.OUT)
-		gpio.setup(self.directionPin, gpio.OUT)
-		gpio.setup(self.enablePin, gpio.OUT)
+		gpio.setup(self.pin1, gpio.OUT)
+        gpio.setup(self.pin2, gpio.OUT)
+        gpio.setup(self.pin3, gpio.OUT)
+        gpio.setup(self.pin4, gpio.OUT)
+        gpio.setup(self.pin5, gpio.OUT)
+        gpio.setup(self.pin6, gpio.OUT)
+        gpio.setup(self.pin7, gpio.OUT)
+        gpio.setup(self.pin8, gpio.OUT)
+
+
 		gpio.setup(self.homePin, gpio.IN)
 
-		gpio.setup(self.stepPin2, gpio.OUT)
-		gpio.setup(self.directionPin2, gpio.OUT)
-		gpio.setup(self.enablePin2, gpio.OUT)
-		
-		#set enable to high (i.e. power is NOT going to the motor)
-		gpio.output(self.enablePin, True)
-		gpio.output(self.enablePin2, True)
+
+
+
 
 
 		
@@ -86,8 +87,7 @@ class Winder:
 
 	def wrap90(self, direction, speed=.02, stayOn = False):
 		#set enable to low (i.e. power IS going to the motor)
-		gpio.output(self.enablePin, False)
-		gpio.output(self.enablePin2, False)
+
 		
 		#set the output to true for left and false for right
 		turnRight = True  # possibly messed this up by changing it from left to right
@@ -96,8 +96,8 @@ class Winder:
 		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
-		gpio.output(self.directionPin, turnRight)
-		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
+
+
 
 
 		
@@ -137,8 +137,8 @@ class Winder:
 		print('Linear speed is ' + str(carrage_speed))
 		print('Rotational speed is ' + str(mandrel_speed))
 
-		a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.enablePin, self.stepPin, self.directionPin, carrage_speed ))
-		b = threading.Thread(target = self.step, args=(mandrel_steps, False,self.enablePin2, self.stepPin2, self.directionPin2, mandrel_speed))   # check if it is the right direction
+		a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.pin1,self.pin2,self.pin3,self.pin4, carrage_speed ))
+		b = threading.Thread(target = self.step, args=(mandrel_steps, False,self.pin5,self.pin6,self.pin7,self.pin8, mandrel_speed))   # check if it is the right direction
 
 		a.start()
 		b.start()
@@ -164,15 +164,10 @@ class Winder:
 
 	def wrap(self, direction, angle, speed=.08, stayOn = False):
 
-		# testStepper.home()  # homing in the beginning may or may not be a good idea
-
-		# stepsperinch = 30  # random guess check later
-		# stepsperrotation = 200  # also a guess
 
 
 
 		#set enable to low (i.e. power IS going to the motor)
-		gpio.output(self.enablePin, False)
 		
 		#set the output to true for left and false for right
 		turnRight = True  # possibly messed this up by changing it from left to right
@@ -181,26 +176,8 @@ class Winder:
 		elif (direction != 'right'):
 			print("STEPPER ERROR: no direction supplied")
 			return False
-		gpio.output(self.directionPin, turnRight)
-		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
 
-
-		# stepCounter = 0
-
-		# steps = self.mandrel_length  # apply a constant here later to convert to inches
-	
-	
-
-
-		#do the math to decide the relative speeds
-
-		# wrap_length = math.pi * self.mandrel_diameter
-		# mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
-		# mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                
-		# 
-		# 
-		# 
 
 
 		mandrel_circumference = math.pi * self.mandrel_diameter
@@ -216,9 +193,15 @@ class Winder:
 		# relative_steps = relative_distance * (carrage_distance_per_step / mandrel_distance_per_step)
 
 
-		# Use tan instead of sin to get full range from 0 to infinity
-		relative_distance = math.tan(math.radians(angle))
+
+
+        # New attempt at relative distance using tan instead of sin
+        relative_distance = math.tan(math.radians(angle))
 		relative_steps =  (carrage_distance_per_step / mandrel_distance_per_step) / relative_distance
+
+
+
+
 
 
 		mandrel_speed = speed
@@ -269,8 +252,8 @@ class Winder:
 			print('turnRight = ' + str(turnRight))
 			
 
-			a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.enablePin, self.stepPin, self.directionPin, carraige_speed ))
-			b = threading.Thread(target = self.step, args=(abs(mandrel_steps), False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed) ) )# check if it is the right direction
+			a = threading.Thread(target = self.step, args=(carraige_steps, turnRight,self.pin1,self.pin2,self.pin3,self.pin4, carraige_speed ))
+			b = threading.Thread(target = self.step, args=(abs(mandrel_steps), False,self.pin5,self.pin6,self.pin7,self.pin8, abs(mandrel_speed) ) )# check if it is the right direction
 			
 
 			if turnRight == True:
@@ -289,7 +272,7 @@ class Winder:
 
 
 			
-			self.step(mandrel_turn, False,self.enablePin2, self.stepPin2, self.directionPin2, abs(mandrel_speed /2) )
+			self.step(mandrel_turn, False,self.pin5,self.pin6,self.pin7,self.pin8, abs(mandrel_speed /2) )
 
 			sleep(.25)
 			print('finished pass')
@@ -305,9 +288,8 @@ class Winder:
 	# direction = direction stepper will move
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
-	def step(self, steps, direction, enablePin, stepPin,directionPin, speed=.005, stayOn=False):
-		#set enable to low (i.e. power IS going to the motor)
-		gpio.output(enablePin, False)
+	def step(self, steps, direction, pin1,pin2,pin3,pin4, speed=.005, stayOn=False):
+
 		
 		#set the output to true for left and false for right
 		turnRight = True  # possibly messed this up by changing it from left to right
@@ -316,34 +298,65 @@ class Winder:
 		# elif (direction != 'right'):
 		# 	print("STEPPER ERROR: no direction supplied")
 		# 	return False
-		gpio.output(directionPin, turnRight)
 
-		stepCounter = 0
 	
 		waitTime = 0.00015/speed #waitTime controls speed
 
 		print('steps = ' + str(steps))
 
-		for i in range(int(steps)):
 
-			#gracefully exit if ctr-c is pressed
-			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+        if turnRight == True:
 
-			#turning the gpio on and off tells the easy driver to take one step
-			gpio.output(stepPin, True)
-			gpio.output(stepPin, False)
-			stepCounter += 1
+            for i in range(int(steps)/2):
+
+                #gracefully exit if ctr-c is pressed
+                #exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+
+                #turning the gpio on and off tells the easy driver to take one step
+                gpio.output(pin1, True)
+                gpio.output(pin2, True)
+                gpio.output(pin3, False)
+                gpio.output(pin4, False)
+
+                sleep(abs(waitTime)/2)
+                gpio.output(pin1, False)
+                gpio.output(pin2, False)
+                gpio.output(pin3, True)
+                gpio.output(pin4, True)
+
+                sleep(abs(waitTime)/2)
+        
+        else:
+
+            for i in range(int(steps)/2):
+
+                #gracefully exit if ctr-c is pressed
+                #exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+
+                #turning the gpio on and off tells the easy driver to take one step
+                gpio.output(pin1, False)
+                gpio.output(pin2, False)
+                gpio.output(pin3, True)
+                gpio.output(pin4, True)
+                
+                stepCounter += 1
+                sleep(abs(waitTime)/2)
+
+                gpio.output(pin1, True)
+                gpio.output(pin2, True)
+                gpio.output(pin3, False)
+                gpio.output(pin4, False)
+
+                stepCounter += 1
+                sleep(abs(waitTime)/2)
+
+
 			# if direction == 'left':
 			# 	self.absolute_position -=1
 			# if direction == 'right' :
 			# 	self.absolute_position +=1
 			#wait before taking the next step thus controlling rotation speed
 
-			sleep(abs(waitTime))
-		
-		if (stayOn == False):
-			#set enable to high (i.e. power is NOT going to the motor)
-			gpio.output(enablePin, True)
 
 		print("stepperDriver complete (turned " + str(direction) + " " + str(steps) + " steps)")
 
