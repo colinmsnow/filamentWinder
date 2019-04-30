@@ -145,19 +145,6 @@ class Winder:
 
 		a.join()
 		b.join()
-
-
-
-
-		# filamentStepper.step(steps, waitTime, self.stepPin)
-		# mandrelStepper.step(mandrelSteps, waitTime2, self.stepPin2)     # check if it is the right direction
-
-		# if direction == 'left':
-		# 	self.absolute_position -= steps
-		# if direction == 'right' :
-		# 	self.absolute_position += steps
-
-		# self.absolute_position2 += mandrel_steps
 		
 
 		print("90 degree wind complete")
@@ -184,23 +171,6 @@ class Winder:
 		gpio.output(self.directionPin, turnRight)
 		gpio.output(self.directionPin2, False)   # not sure if this is the right direction
 
-
-
-		# stepCounter = 0
-
-		# steps = self.mandrel_length  # apply a constant here later to convert to inches
-	
-	
-
-
-		#do the math to decide the relative speeds
-
-		# wrap_length = math.pi * self.mandrel_diameter
-		# mandrel_tangential_speed = (wrap_length / (self.filament_width * self.pulley_diameter)) * speed
-		# mandrel_rotational_speed = mandrel_tangential_speed / (self.mandrel_diameter/2)                
-		# 
-		# 
-		# 
 
 
 		mandrel_circumference = math.pi * self.mandrel_diameter
@@ -231,11 +201,6 @@ class Winder:
 		mandrel_steps = carraige_steps / relative_steps
 
 
-		# mandrel_rotational_speed = speed * (self.mandrel_length / (2* math.pi * self.mandrel_diameter   )) * math.sin(angle)   
-
-		# mandrelSteps = int(self.mandrel_length * mandrel_rotational_speed / speed)
-
-
 		print(mandrel_circumference)
 		print(self.filament_width)
 		print(math.cos(angle))
@@ -257,10 +222,6 @@ class Winder:
 		print(' Number of passes is ' + str(number_of_passes))
 
 
-		# self.step(self.mandrel_length, turnRight,self.enablePin, self.stepPin, self.directionPin  )
-
-
-		# self.step(1000, True,self.enablePin2, self.stepPin2, self.directionPin2  )
 
 
 		for i in range(abs(number_of_passes) * 2):
@@ -306,6 +267,7 @@ class Winder:
 	# speed = defines the denominator in the waitTime equation: waitTime = 0.000001/speed. As "speed" is increased, the waitTime between steps is lowered
 	# stayOn = defines whether or not stepper should stay "on" or not. If stepper will need to receive a new step command immediately, this should be set to "True." Otherwise, it should remain at "False."
 	def step(self, steps, direction, enablePin, stepPin,directionPin, speed=.005, stayOn=False):
+
 		#set enable to low (i.e. power IS going to the motor)
 		gpio.output(enablePin, False)
 		
@@ -313,9 +275,7 @@ class Winder:
 		turnRight = True  # possibly messed this up by changing it from left to right
 		if (direction == 'left') or direction == False:
 			turnRight = False
-		# elif (direction != 'right'):
-		# 	print("STEPPER ERROR: no direction supplied")
-		# 	return False
+			
 		gpio.output(directionPin, turnRight)
 
 		stepCounter = 0
@@ -333,11 +293,7 @@ class Winder:
 			gpio.output(stepPin, True)
 			gpio.output(stepPin, False)
 			stepCounter += 1
-			# if direction == 'left':
-			# 	self.absolute_position -=1
-			# if direction == 'right' :
-			# 	self.absolute_position +=1
-			#wait before taking the next step thus controlling rotation speed
+
 
 			sleep(abs(waitTime))
 		
@@ -423,26 +379,15 @@ class Winder:
 		print("stepperDriver moved to absolute position " + str(self.absolute_position) )
 
 
-class Stepper:
+if __name__ == "__main__":
+		
+	#testStepper.step(1,'left',stayOn = False )
+	testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
+	testStepper.defineParameters(125,38,1.88)
 
-	def step(self, steps, waitTime, stepPin):
-		stepCounter = 0
-		while stepCounter < steps:
-			#gracefully exit if ctr-c is pressed
-			#exitHandler.exitPoint(True) #exitHandler.exitPoint(True, cleanGPIO)
+	testStepper.home()
+	# testStepper.wrap90('right')
 
-			#turning the gpio on and off tells the easy driver to take one step
-			gpio.output(stepPin, True)
-			gpio.output(stepPin, False)
-			#wait before taking the next step thus controlling rotation speed
-			sleep(waitTime)
-#testStepper.step(1,'left',stayOn = False )
-testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-testStepper.defineParameters(125,38,1.88)
+	testStepper.wrap('right', 60)
 
-testStepper.home()
-# testStepper.wrap90('right')
-
-testStepper.wrap('right', 60)
-
-testStepper.cleanGPIO()
+	testStepper.cleanGPIO()
