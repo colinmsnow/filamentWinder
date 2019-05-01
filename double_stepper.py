@@ -388,6 +388,6 @@ if __name__ == "__main__":
 	testStepper.home()
 	# testStepper.wrap90('right')
 
-	testStepper.wrap('right', 60)
+	testStepper.wrap('right', 45)
 
 	testStepper.cleanGPIO()
