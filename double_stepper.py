@@ -389,9 +389,5 @@ if __name__ == "__main__":
 	# testStepper.wrap90('right')
 
 	testStepper.wrap('right', 60)
-	sleep(5)
-	testStepper.wrap90('left')
-	sleep(5)
-	testStepper.wrap('right', 45)
 
 	testStepper.cleanGPIO()
