@@ -383,7 +383,7 @@ if __name__ == "__main__":
 		
 	#testStepper.step(1,'left',stayOn = False )
 	testStepper = Winder([23, 24, 25, 22],[17, 27, 18, 10])
-	testStepper.defineParameters(125,38,1.88)
+	testStepper.defineParameters(125,38,1.524)
 
 	testStepper.home()
 	testStepper.wrap90('right')
