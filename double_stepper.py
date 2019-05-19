@@ -210,7 +210,7 @@ class Winder:
 
 		
 
-		mandrel_turn = int(  abs(steps_per_turn)+ abs(self.filament_width ) *2*math.pi /steps_per_turn))
+		mandrel_turn = int(  abs(steps_per_turn)+ abs(self.filament_width  *2*math.pi /steps_per_turn))
 		print('mandrel turn is : ' + str(mandrel_turn))
 
 
