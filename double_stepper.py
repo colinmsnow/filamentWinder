@@ -210,7 +210,7 @@ class Winder:
 
 		
 
-		mandrel_turn = int(  abs(steps_per_turn / 2 )+ abs(self.filament_width / math.sin(math.radians(90-angle)) /steps_per_turn*2*math.pi))
+		mandrel_turn = int(  abs(steps_per_turn / 2 )+ abs(self.filament_width / math.sin(math.radians(angle-90)) *2*math.pi /steps_per_turn))
 		print('mandrel turn is : ' + str(mandrel_turn))
 
 
