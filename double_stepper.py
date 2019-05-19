@@ -19,7 +19,7 @@ import threading
 ### All lengths in mm ###
 
 STEPS_PER_REV = 200
-MANDREL_GEAR_RATIO = 2.3333
+MANDREL_GEAR_RATIO = 2.333
 BELT_PULLEY_DIAMETER = 15
 
 
@@ -390,6 +390,6 @@ if __name__ == "__main__":
 	testStepper.home()
 	# testStepper.wrap90('right')
 
-	testStepper.wrap('right', 65)
+	testStepper.wrap('right', 40)
 
 	testStepper.cleanGPIO()
